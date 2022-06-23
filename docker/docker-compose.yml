@@ -1,0 +1,14 @@
+version: '3.3'
+services:
+
+  #serveur de base de donnees
+  mariadb:
+    image: 'mariadb:10.7'
+    restart: always
+    environment:
+      MYSQL_DATABASE: lambdadb
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data/mariadb/:/var/lib/mysql/
