@@ -85,6 +85,12 @@
       <version>${mapstruct.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-hal</artifactId>
+      <version>${quarkus-hal.version}</version>
+    </dependency>
+
   </dependencies>
   <build>
     <sourceDirectory>src/main/kotlin</sourceDirectory>
