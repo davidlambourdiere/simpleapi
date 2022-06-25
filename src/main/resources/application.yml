@@ -1,9 +1,0 @@
-# datasource configuration
-quarkus.datasource:
-  db-kind: mariadb
-  username: root
-  password: root
-  jdbc.url: jdbc:mariadb://localhost:3306/lambdadb
-
-# drop and create the database at startup (use `update` to only update the schema)
-quarkus.hibernate-orm.database.generation: update
