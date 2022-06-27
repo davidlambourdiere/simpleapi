@@ -11,7 +11,9 @@ import org.mapstruct.MappingTarget
 interface PersonMapper{
     @Mapping(target = "restServiceDiscovery", ignore = true)
     fun toPersonDto(person: Person): PersonDTO
+
     @Mapping(target = "id", ignore = true)
     fun toPerson(personDTO: PersonDTO): Person
-    fun toExistingPerson(personDTO: PersonDTO, @MappingTarget person: Person)
+
+    fun toExistingPerson(personDTO: PersonDTO, @MappingTarget person: Person): Person
 }

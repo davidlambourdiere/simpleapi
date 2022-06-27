@@ -27,4 +27,13 @@ class PersonResource(val personService: PersonService) {
     @AddLinks
     @LinkResource
     fun createPerson(personDto: PersonDTO) = personService.createPerson(personDto)
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @AddLinks
+    @LinkResource
+    fun updatePerson(@PathParam("id") id: Long, personDto: PersonDTO) = personService.updatePerson(id, personDto)
+
 }

@@ -12,8 +12,6 @@ class PersonServiceImpl(
         val personRepository: PersonRepository,
         val personMapper: PersonMapper) : PersonService {
 
-    private fun findPersonById(id: Long) =
-            personRepository.findById(id) ?: throw NotFoundException("Couldn't find person with id %d".format(id))
 
     override fun getPerson(id: Long): PersonDTO = personMapper.toPersonDto(findPersonById(id))
 
@@ -24,6 +22,17 @@ class PersonServiceImpl(
             personMapper.toPersonDto(it)
         }
     }
-
     override fun getAllPerson(): List<PersonDTO> = personRepository.listAll().map { personMapper.toPersonDto(it) }
+
+    @Transactional
+    override fun updatePerson(id: Long, personDto: PersonDTO): PersonDTO {
+        val person = findPersonById(id)
+        return personMapper.toExistingPerson(personDto, person).let {
+            personRepository.persist(it)
+            personMapper.toPersonDto(it)
+        }
+    }
+
+    private fun findPersonById(id: Long) =
+            personRepository.findById(id) ?: throw NotFoundException("Couldn't find person with id %d".format(id))
 }

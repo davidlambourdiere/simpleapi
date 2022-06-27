@@ -7,8 +7,8 @@ import javax.persistence.*
 class Person(@Id @GeneratedValue
              val id: Long? = null,
              @Column(nullable = false)
-             val firstname: String,
+             var firstname: String,
              @Column(nullable = false)
-             val lastname:String,
+             var lastname:String,
              @Column(nullable = false)
-             val age: Int)
+             var age: Int)
