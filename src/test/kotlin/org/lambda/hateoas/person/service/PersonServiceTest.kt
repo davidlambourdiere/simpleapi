@@ -109,4 +109,20 @@ internal class PersonServiceTest {
         verify { personMapper.toPerson(mockedPersonDto1) }
         verify { personRepository.persist(mockedPerson1) }
     }
+
+    @Test
+    fun updatePerson_shouldPersistPerson_whenGivenPersonDto(){
+        //given
+        every { personService.findPersonById(any()) } returns mockedPerson1
+        every { personRepository.persist(mockedPerson1) } just Runs
+        every { personMapper.toExistingPerson(mockedPersonDto1, mockedPerson1) } returns mockedPerson1
+
+        //when
+        personService.updatePerson(1, mockedPersonDto1)
+
+        //then
+        verify { personService.findPersonById(1) }
+        verify { personMapper.toExistingPerson(mockedPersonDto1, mockedPerson1) }
+        verify { personRepository.persist(mockedPerson1) }
+    }
 }
