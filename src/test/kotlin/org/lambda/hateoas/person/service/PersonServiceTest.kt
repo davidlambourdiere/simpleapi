@@ -85,4 +85,19 @@ internal class PersonServiceTest {
         verify { personMapper.toPersonDto(mockedPerson1) }
         assertEquals(mockedPersonDto1, personDto);
     }
+
+    @Test
+    fun getAllPerson_shouldReturnListOfPersonDto(){
+        //given
+        every { personRepository.listAll() } returns listOf(mockedPerson1)
+        every { personMapper.toPersonDto(mockedPerson1) } returns mockedPersonDto1
+
+        //when
+        val persons = personService.getAllPerson()
+
+        //then
+        verify { personRepository.listAll() }
+        verify {  personMapper.toPersonDto(mockedPerson1) }
+        assertEquals(listOf(mockedPersonDto1), persons)
+    }
 }
