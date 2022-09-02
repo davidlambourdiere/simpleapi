@@ -1,9 +1,7 @@
 package org.lambda.hateoas.person.service
 
-import io.mockk.every
+import io.mockk.*
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
-import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -51,6 +49,8 @@ internal class PersonServiceTest {
                 firstname = "Jon",
                 lastname = "Snow",
                 age = 21)
+        every { personMapper.toPersonDto(mockedPerson1) } returns mockedPersonDto1
+        every { personMapper.toPerson(mockedPersonDto1) } returns mockedPerson1
     }
 
     @Test
@@ -75,7 +75,6 @@ internal class PersonServiceTest {
     fun getPerson_shouldReturnExpectedPersonDto_whenGoodId() {
         //given
         every { personService.findPersonById(any()) } returns mockedPerson1
-        every { personMapper.toPersonDto(mockedPerson1) } returns mockedPersonDto1
 
         //when
         val personDto = personService.getPerson(1)
@@ -90,7 +89,6 @@ internal class PersonServiceTest {
     fun getAllPerson_shouldReturnListOfPersonDto(){
         //given
         every { personRepository.listAll() } returns listOf(mockedPerson1)
-        every { personMapper.toPersonDto(mockedPerson1) } returns mockedPersonDto1
 
         //when
         val persons = personService.getAllPerson()
