@@ -9,11 +9,13 @@ import javax.ws.rs.NotFoundException
 
 @ApplicationScoped
 class PersonService(
-        val personRepository: PersonRepository,
-        val personMapper: PersonMapper) {
+        private val personRepository: PersonRepository,
+        private val personMapper: PersonMapper) {
 
 
     fun getPerson(id: Long): PersonDTO = personMapper.toPersonDto(findPersonById(id))
+
+    fun getAllPerson(): List<PersonDTO> = personRepository.listAll().map { personMapper.toPersonDto(it) }
 
     @Transactional
     fun createPerson(personDto: PersonDTO): PersonDTO {
@@ -22,7 +24,6 @@ class PersonService(
             personMapper.toPersonDto(it)
         }
     }
-    fun getAllPerson(): List<PersonDTO> = personRepository.listAll().map { personMapper.toPersonDto(it) }
 
     @Transactional
     fun updatePerson(id: Long, personDto: PersonDTO): PersonDTO {
