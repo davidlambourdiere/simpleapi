@@ -3,12 +3,14 @@ package org.lambda.hateoas.person.service
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.lambda.hateoas.core.model.domain.Person
+import org.lambda.hateoas.person.model.dto.PersonDTO
 import org.lambda.hateoas.person.model.mapper.PersonMapper
 import org.lambda.hateoas.person.repository.PersonRepository
 import java.time.LocalDateTime
@@ -18,6 +20,8 @@ import javax.ws.rs.NotFoundException
 internal class PersonServiceTest {
 
     lateinit var mockedPerson1: Person
+
+    lateinit var mockedPersonDto1: PersonDTO
 
     lateinit var personMapper: PersonMapper
 
@@ -41,6 +45,12 @@ internal class PersonServiceTest {
                 age = 21,
                 createdAt = LocalDateTime.of(2022,9,2, 0, 0 , 0),
                 updatedAt = LocalDateTime.of(2022,9,2, 0, 0 , 0))
+
+        mockedPersonDto1 = PersonDTO(
+                id = 1,
+                firstname = "Jon",
+                lastname = "Snow",
+                age = 21)
     }
 
     @Test
@@ -59,5 +69,20 @@ internal class PersonServiceTest {
         every { personRepository.findById(any()) } returns null
         //when then
         assertThrows<NotFoundException> { personService.findPersonById(1) }
+    }
+
+    @Test
+    fun getPerson_shouldReturnExpectedPersonDto_whenGoodId() {
+        //given
+        every { personService.findPersonById(any()) } returns mockedPerson1
+        every { personMapper.toPersonDto(mockedPerson1) } returns mockedPersonDto1
+
+        //when
+        val personDto = personService.getPerson(1)
+
+        //then
+        verify { personService.findPersonById(1) }
+        verify { personMapper.toPersonDto(mockedPerson1) }
+        assertEquals(mockedPersonDto1, personDto);
     }
 }
