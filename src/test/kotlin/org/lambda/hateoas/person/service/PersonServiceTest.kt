@@ -98,4 +98,15 @@ internal class PersonServiceTest {
         verify {  personMapper.toPersonDto(mockedPerson1) }
         assertEquals(listOf(mockedPersonDto1), persons)
     }
+
+    @Test
+    fun createPerson_shouldPersistPerson_whenGivenPersonDto(){
+        //given
+        every { personRepository.persist(mockedPerson1) } just Runs
+        //when
+        personService.createPerson(mockedPersonDto1)
+        //then
+        verify { personMapper.toPerson(mockedPersonDto1) }
+        verify { personRepository.persist(mockedPerson1) }
+    }
 }
